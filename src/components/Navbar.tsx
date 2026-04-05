@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="/" className="font-['Space_Grotesk'] text-xl font-bold tracking-tight text-foreground">
+        <a href="/" className="text-xl font-bold tracking-tight text-foreground">
           <span className="text-primary">◈</span> Cayley
         </a>
 
