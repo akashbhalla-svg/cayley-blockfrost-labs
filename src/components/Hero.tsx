@@ -3,7 +3,7 @@ import { BookOpen } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative flex flex-col items-center justify-center overflow-hidden pt-24 pb-16">
+    <section className="relative flex flex-col items-center justify-center overflow-hidden pt-16 pb-16">
       {/* Grid background */}
       <div className="absolute inset-0 grid-bg opacity-40" />
 
