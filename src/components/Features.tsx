@@ -29,7 +29,7 @@ const Features = () => {
       <div className="absolute inset-0 grid-bg opacity-20" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="text-center mb-16">
-          <h2 className="font-['Space_Grotesk'] text-3xl font-bold text-foreground sm:text-4xl">
+          <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
             Built for the <span className="text-primary">Multichain</span> Future
           </h2>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
@@ -47,7 +47,7 @@ const Features = () => {
               <div className="mb-4 inline-flex rounded-lg border border-border bg-secondary/40 p-3 text-primary">
                 <f.icon size={22} />
               </div>
-              <h3 className="font-['Space_Grotesk'] text-lg font-semibold text-foreground">{f.title}</h3>
+              <h3 className="text-lg font-semibold text-foreground">{f.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.description}</p>
             </div>
           ))}

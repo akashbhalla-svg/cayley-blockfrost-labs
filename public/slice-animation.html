@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chain-Agnostic Slice Indexing</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a0c12;--surface:#11141e;--surface-2:#161b28;--border:#1c2436;
+    --text:#b8c4d8;--text-dim:#4a5874;--text-bright:#e2e8f4;
+    --btc:#f7931a;--btc-dim:#f7931a15;--btc-glow:#f7931a40;--btc-border:#f7931a50;
+    --ada:#17d1aa;--ada-dim:#17d1aa15;--ada-glow:#17d1aa40;--ada-border:#17d1aa50;
+    --slice:#00d4ff;--slice-glow:#00d4ff30;--slice-dim:#00d4ff12;
+    --purple:#a78bfa;--purple-dim:#a78bfa15;--purple-glow:#a78bfa40;
+  }
+  body{
+    background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:flex-start;padding:30px 0 40px;overflow-x:hidden;position:relative;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(circle at 1px 1px,var(--border) 1px,transparent 0);
+    background-size:30px 30px;opacity:.2;
+  }
+  .orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none}
+  .orb-1{width:500px;height:500px;background:var(--btc);top:-180px;left:-120px;opacity:.07;animation:drift 16s ease-in-out infinite}
+  .orb-2{width:500px;height:500px;background:var(--ada);top:-180px;right:-120px;opacity:.07;animation:drift 16s ease-in-out infinite reverse}
+  .orb-3{width:300px;height:300px;background:var(--purple);bottom:-80px;left:50%;transform:translateX(-50%);opacity:.05;animation:drift 12s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(25px,18px)}}
+
+  .wrapper{
+    max-width:880px;width:100%;padding:0 18px;
+    display:flex;flex-direction:column;align-items:center;gap:22px;
+    position:relative;z-index:1;
+  }
+
+  /* Header */
+  .header{text-align:center}
+  .chain-badges{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 11px;border-radius:5px;color:#fff;
+  }
+  .badge.btc{background:#c47512}
+  .badge.ada{background:#0033ad}
+  .badge svg{width:12px;height:12px;fill:currentColor}
+  .header h1{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;
+    font-size:1.45rem;letter-spacing:-.03em;color:var(--text-bright);margin-bottom:5px;
+  }
+  .header h1 em{font-style:normal;background:linear-gradient(135deg,var(--btc),var(--ada));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header p{font-size:.58rem;color:var(--text-dim);letter-spacing:.04em}
+  .tagline{
+    margin-top:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:.72rem;color:var(--text-bright);
+    background:linear-gradient(135deg,var(--btc-dim),var(--ada-dim));
+    border:1px solid var(--border);border-radius:7px;padding:7px 15px;
+    animation:tagGlow 4s ease-in-out infinite;
+  }
+  @keyframes tagGlow{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 14px var(--ada-glow)}}
+
+  /* Chains row */
+  .chains{display:flex;gap:14px;width:100%}
+  .chain-col{flex:1;min-width:0}
+
+  /* Scale bars */
+  .scale-section{margin-bottom:5px}
+  .scale-top{display:flex;justify-content:space-between;margin-bottom:3px}
+  .scale-top .label{font-size:.46rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim)}
+  .scale-bar{
+    width:100%;height:18px;background:var(--surface);
+    border:1px solid var(--border);border-radius:5px;position:relative;overflow:hidden;
+  }
+  .scale-bar-fill{
+    position:absolute;inset:2px;border-radius:3px;
+    background:repeating-linear-gradient(90deg,var(--surface-2) 0,var(--surface-2) 4px,var(--border) 4px,var(--border) 5px);
+    background-size:5px 100%;animation:dataScroll 3s linear infinite;
+  }
+  @keyframes dataScroll{to{background-position:-20px 0}}
+  .seg{
+    position:absolute;top:2px;bottom:2px;border-radius:2px;z-index:2;
+    opacity:0;transition:opacity .4s,box-shadow .4s;
+  }
+  .seg.active{opacity:1}
+  .chain-col.btc-col .seg{background:var(--btc-dim);border:1px solid var(--btc)}
+  .chain-col.btc-col .seg.active{box-shadow:0 0 8px var(--btc-glow)}
+  .chain-col.ada-col .seg{background:var(--ada-dim);border:1px solid var(--ada)}
+  .chain-col.ada-col .seg.active{box-shadow:0 0 8px var(--ada-glow)}
+
+  /* Block grids */
+  .grid-label{
+    display:flex;align-items:center;gap:5px;
+    font-size:.48rem;color:var(--text-dim);text-transform:uppercase;
+    letter-spacing:.08em;margin-bottom:3px;
+  }
+  .grid-label .dot{width:4px;height:4px;border-radius:50%;animation:blink 2.5s ease-in-out infinite}
+  .btc-col .grid-label .dot{background:var(--btc)}
+  .ada-col .grid-label .dot{background:var(--ada)}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+  .block-grid{
+    background:var(--surface);border:1px solid var(--border);border-radius:8px;
+    padding:3px;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;position:relative;
+  }
+  .cell{
+    height:22px;background:var(--bg);border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.38rem;font-weight:400;color:var(--text-dim);
+    position:relative;transition:all .35s ease;
+  }
+  .btc-col .cell.hit{
+    background:linear-gradient(135deg,#f7931a10,#f7931a08);
+    color:var(--btc);transform:scale(1.08);box-shadow:0 0 8px var(--btc-glow);
+  }
+  .ada-col .cell.hit{
+    background:linear-gradient(135deg,#17d1aa10,#00d4ff08);
+    color:var(--ada);transform:scale(1.08);box-shadow:0 0 8px var(--ada-glow);
+  }
+  .scanline{
+    position:absolute;left:0;right:0;height:1.5px;
+    opacity:0;pointer-events:none;z-index:3;
+  }
+  .btc-col .scanline{background:linear-gradient(90deg,transparent,var(--btc),transparent)}
+  .ada-col .scanline{background:linear-gradient(90deg,transparent,var(--ada),transparent)}
+  .scanline.go{animation:scan 1s ease-in-out forwards}
+  @keyframes scan{0%{top:-1px;opacity:0}10%{opacity:.5}100%{top:100%;opacity:0}}
+
+  /* Flyers */
+  .flyer{
+    position:fixed;height:22px;border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.38rem;font-weight:500;z-index:100;pointer-events:none;
+    transition:all .9s cubic-bezier(.4,0,.15,1);opacity:1;
+  }
+  .flyer.btc-fly{
+    background:linear-gradient(135deg,#f7931a15,#f7931a0c);
+    color:var(--btc);border:1px solid var(--btc);box-shadow:0 0 12px var(--btc-glow);
+  }
+  .flyer.ada-fly{
+    background:linear-gradient(135deg,#17d1aa15,#00d4ff0c);
+    color:var(--ada);border:1px solid var(--ada);box-shadow:0 0 12px var(--ada-glow);
+  }
+
+  /* Output slice */
+  .output{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+  .output-label{
+    font-size:.5rem;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--text-dim);display:flex;align-items:center;gap:8px;
+    opacity:0;transition:opacity .4s;
+  }
+  .output-label.visible{opacity:1}
+  .output-label .tag{
+    font-weight:600;font-size:.43rem;padding:2px 6px;border-radius:3px;letter-spacing:.06em;
+  }
+  .output-label .tag.btc-tag{background:var(--btc);color:var(--bg)}
+  .output-label .tag.ada-tag{background:var(--ada);color:var(--bg)}
+  .output-grid{
+    display:flex;gap:2px;flex-wrap:wrap;justify-content:center;
+    background:var(--surface);border:1.5px solid var(--border);border-radius:8px;
+    padding:4px 6px;transition:all .5s ease;min-height:30px;
+  }
+  .output-grid.active{
+    border-color:var(--slice);
+    box-shadow:0 0 35px var(--slice-glow),0 6px 24px rgba(0,0,0,.5);
+  }
+  .out-group{display:flex;gap:2px;padding:0 2px;position:relative}
+  .out-group+.out-group::before{
+    content:'';position:absolute;left:-2px;top:3px;bottom:3px;
+    width:1px;opacity:.25;
+  }
+  .btc-out .out-group+.out-group::before,.btc-out+.ada-out::before{background:var(--btc)}
+  .ada-out .out-group+.out-group::before,.ada-out+.btc-out::before{background:var(--ada)}
+  .out-group+.out-group::before{background:var(--text-dim)}
+
+  .output-grid .cell{
+    width:28px;height:22px;font-weight:500;font-size:.36rem;
+    opacity:0;transition:opacity .3s;
+  }
+  .output-grid .cell.landed{opacity:1}
+  .btc-out .cell{background:linear-gradient(135deg,#f7931a08,#f7931a04);color:var(--btc);border:1px solid var(--btc-border)}
+  .ada-out .cell{background:linear-gradient(135deg,#17d1aa08,#00d4ff04);color:var(--ada);border:1px solid var(--ada-border)}
+
+  /* ═══ dApp section ═══ */
+  .dapp-section{
+    display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;
+    opacity:0;transition:opacity .6s ease;
+  }
+  .dapp-section.visible{opacity:1}
+
+  /* API stream line */
+  .api-stream{
+    width:2px;height:36px;position:relative;overflow:hidden;
+    border-radius:1px;background:var(--surface-2);
+  }
+  .api-stream::after{
+    content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;
+    background:linear-gradient(to bottom,transparent,var(--purple),transparent);
+    animation:streamDown 1s linear infinite;opacity:0;
+  }
+  .dapp-section.visible .api-stream::after{opacity:1}
+  @keyframes streamDown{0%{top:-50%}100%{top:100%}}
+
+  .api-tag{
+    font-size:.45rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--purple);background:var(--purple-dim);
+    border:1px solid var(--purple);border-radius:4px;padding:3px 10px;
+    position:relative;
+  }
+  .api-tag::before,.api-tag::after{
+    content:'';position:absolute;top:50%;width:18px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--purple));
+  }
+  .api-tag::before{right:100%;transform:translateY(-50%)}
+  .api-tag::after{left:100%;transform:translateY(-50%) scaleX(-1)}
+
+  /* dApp card */
+  .dapp-card{
+    width:100%;max-width:460px;
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;transition:border-color .5s,box-shadow .5s;
+  }
+  .dapp-section.querying .dapp-card{
+    border-color:var(--purple);
+    box-shadow:0 0 30px var(--purple-glow),0 8px 30px rgba(0,0,0,.4);
+  }
+
+  .dapp-titlebar{
+    display:flex;align-items:center;gap:8px;padding:8px 12px;
+    border-bottom:1px solid var(--border);background:var(--surface-2);
+  }
+  .dapp-dots{display:flex;gap:4px}
+  .dapp-dots span{width:6px;height:6px;border-radius:50%;background:var(--border)}
+  .dapp-section.querying .dapp-dots span:nth-child(1){background:#ff5f57}
+  .dapp-section.querying .dapp-dots span:nth-child(2){background:#febc2e}
+  .dapp-section.querying .dapp-dots span:nth-child(3){background:#28c840}
+  .dapp-title{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:.6rem;color:var(--text-dim);letter-spacing:.04em;
+  }
+  .dapp-section.querying .dapp-title{color:var(--text-bright)}
+  .dapp-status{
+    margin-left:auto;font-size:.42rem;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--text-dim);display:flex;align-items:center;gap:4px;
+  }
+  .dapp-status .status-dot{
+    width:5px;height:5px;border-radius:50%;background:var(--text-dim);transition:background .3s;
+  }
+  .dapp-section.querying .dapp-status .status-dot{background:var(--purple);animation:blink 1s ease-in-out infinite}
+  .dapp-section.querying .dapp-status{color:var(--purple)}
+
+  /* GraphQL query block */
+  .dapp-query{
+    padding:10px 14px;font-size:.44rem;line-height:1.6;
+  }
+  .query-line{
+    opacity:0;transform:translateX(-6px);transition:all .25s ease;
+    color:var(--text-dim);
+  }
+  .query-line.show{opacity:1;transform:translateX(0)}
+  .q-kw{color:var(--purple);font-weight:600}
+  .q-fn{color:var(--slice)}
+  .q-str{color:#f0a040}
+  .query-response{
+    margin-top:8px;padding-top:7px;border-top:1px solid var(--border);
+    font-size:.42rem;color:var(--text-dim);
+    opacity:0;transform:translateY(4px);transition:all .3s ease;
+  }
+  .query-response.show{opacity:1;transform:translateY(0)}
+  .q-ok{color:#28c840;font-weight:700}
+
+  /* ═══ Define slice box ═══ */
+  .define-section{
+    width:100%;max-width:460px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .define-tag{
+    font-size:.45rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--slice);background:var(--slice-dim);
+    border:1px solid var(--slice);border-radius:4px;padding:3px 10px;
+    position:relative;
+  }
+  .define-tag::before,.define-tag::after{
+    content:'';position:absolute;top:50%;width:18px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--slice));
+  }
+  .define-tag::before{right:100%;transform:translateY(-50%)}
+  .define-tag::after{left:100%;transform:translateY(-50%) scaleX(-1)}
+
+  .define-card{
+    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;transition:border-color .5s,box-shadow .5s;
+  }
+  .define-section.active .define-card{
+    border-color:var(--slice);
+    box-shadow:0 0 25px var(--slice-glow),0 6px 20px rgba(0,0,0,.4);
+  }
+
+  .define-titlebar{
+    display:flex;align-items:center;gap:8px;padding:8px 12px;
+    border-bottom:1px solid var(--border);background:var(--surface-2);
+  }
+  .define-title{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:.6rem;color:var(--text-dim);letter-spacing:.04em;transition:color .3s;
+  }
+  .define-section.active .define-title{color:var(--text-bright)}
+
+  .define-query{padding:10px 14px;font-size:.44rem;line-height:1.6}
+  .def-line{
+    opacity:0;transform:translateX(-6px);transition:all .25s ease;color:var(--text-dim);
+  }
+  .def-line.show{opacity:1;transform:translateX(0)}
+  .def-line .d-kw{color:var(--slice);font-weight:600}
+  .def-line .d-fn{color:var(--ada)}
+  .def-line .d-str{color:#f0a040}
+  .def-line .d-cm{color:var(--text-dim);opacity:.5;font-style:italic}
+
+  .define-stream-down{
+    width:2px;height:28px;position:relative;overflow:hidden;
+    border-radius:1px;background:var(--surface-2);
+  }
+  .define-stream-down::after{
+    content:'';position:absolute;top:-100%;left:0;width:100%;height:50%;
+    background:linear-gradient(to bottom,transparent,var(--slice),transparent);
+    animation:streamDown 1s linear infinite;opacity:0;
+  }
+  .define-section.active .define-stream-down::after{opacity:1}
+
+  /* Concepts */
+  .concepts{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .concept{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+  .concept .icon{
+    width:22px;height:22px;border-radius:5px;
+    display:flex;align-items:center;justify-content:center;font-size:.6rem;margin-bottom:1px;
+  }
+  .concept .icon.i1{background:var(--surface);border:1px solid var(--border);color:var(--text-dim)}
+  .concept .icon.i2{background:var(--btc-dim);border:1px solid var(--btc);color:var(--btc)}
+  .concept .icon.i3{background:var(--ada-dim);border:1px solid var(--ada);color:var(--ada)}
+  .concept .icon.i4{background:var(--slice-dim);border:1px solid var(--slice);color:var(--slice)}
+  .concept .icon.i5{background:var(--purple-dim);border:1px solid var(--purple);color:var(--purple)}
+  .concept .title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.55rem;color:var(--text-bright)}
+  .concept .desc{font-size:.4rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.07em;max-width:80px}
+
+  /* Code */
+  .code{
+    background:var(--surface);border:1px solid var(--border);border-radius:7px;
+    padding:7px 12px;font-size:.52rem;color:var(--text-dim);
+    display:flex;gap:3px;flex-wrap:wrap;
+  }
+  .code .fn{color:var(--purple)} .code .str{color:#f0a040} .code .op{color:var(--text-dim)}
+  .code .cm{color:var(--text-dim);font-style:italic;opacity:.6} .code .var{color:var(--text-bright)}
+  .code .kw{color:var(--slice)}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="wrapper">
+
+  <!-- Define your slice -->
+  <div class="define-section" id="defineSection">
+    <div class="define-tag">Step 1 · Define</div>
+    <div class="define-card">
+      <div class="define-titlebar">
+        <div class="define-title">Define Your Slice</div>
+      </div>
+      <div class="define-query">
+        <div class="def-line" id="dline1"><span class="d-kw">slice</span> {</div>
+        <div class="def-line" id="dline2">&nbsp;&nbsp;<span class="d-fn">chains</span>: [<span class="d-str">"btc"</span>, <span class="d-str">"ada"</span>]</div>
+        <div class="def-line" id="dline3">&nbsp;&nbsp;<span class="d-fn">include</span>: [<span class="d-str">"blocks"</span>, <span class="d-str">"txs"</span>, <span class="d-str">"metadata"</span>]</div>
+        <div class="def-line" id="dline4">&nbsp;&nbsp;<span class="d-fn">filter</span>: { <span class="d-str">"epoch"</span>: <span class="d-str">"*"</span>, <span class="d-str">"relevant"</span>: <span class="d-kw">true</span> }</div>
+        <div class="def-line" id="dline5">} <span class="d-cm">// only what your dApp needs</span></div>
+      </div>
+    </div>
+    <div class="define-stream-down"></div>
+  </div>
+
+  <div class="chains">
+    <!-- Bitcoin -->
+    <div class="chain-col btc-col">
+      <div class="scale-section">
+        <div class="scale-top"><span class="label">Bitcoin Historical Data</span></div>
+        <div class="scale-bar">
+          <div class="scale-bar-fill"></div>
+          <div class="seg" data-group="b1" style="left:5%;width:6%"></div>
+          <div class="seg" data-group="b2" style="left:28%;width:5%"></div>
+          <div class="seg" data-group="b3" style="left:52%;width:4%"></div>
+          <div class="seg" data-group="b4" style="left:78%;width:7%"></div>
+        </div>
+      </div>
+      <div class="grid-label"><div class="dot"></div> Bitcoin · Blocks & Txs</div>
+      <div class="block-grid" data-chain="btc">
+        <div class="scanline"></div>
+        <div class="cell" data-g="b1">3fa2</div><div class="cell" data-g="b1">c0e7</div><div class="cell">91b4</div><div class="cell">d738</div>
+        <div class="cell" data-g="b2">a5f0</div><div class="cell" data-g="b2">1e9c</div><div class="cell">82d6</div><div class="cell">4b13</div>
+        <div class="cell">f7a9</div><div class="cell">06c5</div><div class="cell">b342</div><div class="cell">e81d</div>
+        <div class="cell" data-g="b3">5d90</div><div class="cell" data-g="b3">ca67</div><div class="cell">2fb8</div><div class="cell">7e41</div>
+        <div class="cell">d0a3</div><div class="cell">93f6</div><div class="cell">1c7e</div><div class="cell">a4b2</div>
+        <div class="cell">68d9</div><div class="cell">fc05</div><div class="cell" data-g="b4">3791</div><div class="cell" data-g="b4">be4a</div>
+      </div>
+    </div>
+    <!-- Cardano -->
+    <div class="chain-col ada-col">
+      <div class="scale-section">
+        <div class="scale-top"><span class="label">Cardano Historical Data</span></div>
+        <div class="scale-bar">
+          <div class="scale-bar-fill"></div>
+          <div class="seg" data-group="a1" style="left:8%;width:5%"></div>
+          <div class="seg" data-group="a2" style="left:35%;width:6%"></div>
+          <div class="seg" data-group="a3" style="left:62%;width:4%"></div>
+          <div class="seg" data-group="a4" style="left:85%;width:5%"></div>
+        </div>
+      </div>
+      <div class="grid-label"><div class="dot"></div> Cardano · Blocks & Metadata</div>
+      <div class="block-grid" data-chain="ada">
+        <div class="scanline"></div>
+        <div class="cell">e2c4</div><div class="cell" data-g="a1">7b19</div><div class="cell" data-g="a1">d0f3</div><div class="cell">a856</div>
+        <div class="cell">4ce7</div><div class="cell">9301</div><div class="cell" data-g="a2">f6b8</div><div class="cell" data-g="a2">2da5</div>
+        <div class="cell">8174</div><div class="cell">c5e0</div><div class="cell">0a9f</div><div class="cell">63d2</div>
+        <div class="cell" data-g="a3">b74c</div><div class="cell" data-g="a3">18e6</div><div class="cell">df90</div><div class="cell">5a2b</div>
+        <div class="cell">e837</div><div class="cell">41c9</div><div class="cell">7f05</div><div class="cell">b6d1</div>
+        <div class="cell">2493</div><div class="cell" data-g="a4">c8a7</div><div class="cell" data-g="a4">50fe</div><div class="cell">9d64</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combined output -->
+  <div class="output" id="output">
+    <div class="output-label" id="outLabel">
+      Combined Chain-Agnostic Slice
+      <span class="tag btc-tag">BTC</span>
+      <span class="tag ada-tag">ADA</span>
+    </div>
+    <div class="output-grid" id="outGrid">
+      <div class="out-group btc-out" data-tg="b1"><div class="cell">3fa2</div><div class="cell">c0e7</div></div>
+      <div class="out-group ada-out" data-tg="a1"><div class="cell">7b19</div><div class="cell">d0f3</div></div>
+      <div class="out-group ada-out" data-tg="a2"><div class="cell">f6b8</div><div class="cell">2da5</div></div>
+      <div class="out-group btc-out" data-tg="b2"><div class="cell">a5f0</div><div class="cell">1e9c</div></div>
+      <div class="out-group ada-out" data-tg="a3"><div class="cell">b74c</div><div class="cell">18e6</div></div>
+      <div class="out-group btc-out" data-tg="b3"><div class="cell">5d90</div><div class="cell">ca67</div></div>
+      <div class="out-group btc-out" data-tg="b4"><div class="cell">3791</div><div class="cell">be4a</div></div>
+      <div class="out-group ada-out" data-tg="a4"><div class="cell">c8a7</div><div class="cell">50fe</div></div>
+    </div>
+  </div>
+
+  <!-- dApp section -->
+  <div class="dapp-section" id="dappSection">
+    <div class="api-stream"></div>
+    <div class="api-tag">Step 2 · Index</div>
+
+    <div class="dapp-card">
+      <div class="dapp-titlebar">
+        <div class="dapp-dots"><span></span><span></span><span></span></div>
+        <div class="dapp-title">Your dApp</div>
+        <div class="dapp-status">
+          <span class="status-dot"></span>
+          <span id="statusText">idle</span>
+        </div>
+      </div>
+      <div class="dapp-query" id="dappQuery">
+        <div class="query-line" id="qline1"><span class="q-kw">query</span> {</div>
+        <div class="query-line" id="qline2">&nbsp;&nbsp;<span class="q-fn">slice</span>(chains: [<span class="q-str">"btc"</span>, <span class="q-str">"ada"</span>]) {</div>
+        <div class="query-line" id="qline3">&nbsp;&nbsp;&nbsp;&nbsp;data { txId block hash }</div>
+        <div class="query-line" id="qline4">&nbsp;&nbsp;}</div>
+        <div class="query-line" id="qline5">}</div>
+        <div class="query-response" id="qResponse">
+          <span class="q-ok">&#10003;</span> 16 records · 42ms
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BTC_GROUPS = ['b1','b2','b3','b4'];
+const ADA_GROUPS = ['a1','a2','a3','a4'];
+const ALL_GROUPS = ['b1','a1','a2','b2','a3','b3','b4','a4'];
+const CYCLE = 16000;
+
+function run() {
+  const btcGrid = document.querySelector('[data-chain="btc"]');
+  const adaGrid = document.querySelector('[data-chain="ada"]');
+  const outLabel = document.getElementById('outLabel');
+  const outGrid = document.getElementById('outGrid');
+  const outCells = outGrid.querySelectorAll('.cell');
+  const dappSection = document.getElementById('dappSection');
+  const statusText = document.getElementById('statusText');
+  const queryLines = document.querySelectorAll('.query-line');
+  const qResponse = document.getElementById('qResponse');
+  const defineSection = document.getElementById('defineSection');
+  const defLines = document.querySelectorAll('.def-line');
+
+  function reset() {
+    document.querySelectorAll('.cell[data-g]').forEach(c => { c.classList.remove('hit'); c.style.opacity = ''; });
+    document.querySelectorAll('.seg').forEach(s => s.classList.remove('active'));
+    btcGrid.querySelector('.scanline').classList.remove('go');
+    adaGrid.querySelector('.scanline').classList.remove('go');
+    outLabel.classList.remove('visible');
+    outGrid.classList.remove('active');
+    outCells.forEach(c => c.classList.remove('landed'));
+    document.querySelectorAll('.flyer').forEach(f => f.remove());
+    dappSection.classList.remove('visible','querying');
+    statusText.textContent = 'idle';
+    queryLines.forEach(l => l.classList.remove('show'));
+    qResponse.classList.remove('show');
+    defineSection.classList.remove('active');
+    defLines.forEach(l => l.classList.remove('show'));
+  }
+
+  function tick() {
+    reset();
+
+    // 0ms — Define box: type lines
+    defLines.forEach((line, i) => {
+      setTimeout(() => line.classList.add('show'), i * 180);
+    });
+
+    // 900ms — Define box activates
+    setTimeout(() => {
+      defineSection.classList.add('active');
+    }, 900);
+
+    // 1600ms — Scanlines
+    setTimeout(() => {
+      [btcGrid, adaGrid].forEach(g => {
+        const sl = g.querySelector('.scanline');
+        sl.classList.remove('go'); void sl.offsetWidth; sl.classList.add('go');
+      });
+    }, 1600);
+
+    // 2200ms — Highlight BTC
+    BTC_GROUPS.forEach((g, i) => {
+      setTimeout(() => {
+        document.querySelectorAll(`[data-g="${g}"]`).forEach(c => c.classList.add('hit'));
+        const seg = document.querySelector(`[data-group="${g}"]`);
+        if (seg) seg.classList.add('active');
+      }, 2200 + i * 120);
+    });
+
+    // 2400ms — Highlight ADA
+    ADA_GROUPS.forEach((g, i) => {
+      setTimeout(() => {
+        document.querySelectorAll(`[data-g="${g}"]`).forEach(c => c.classList.add('hit'));
+        const seg = document.querySelector(`[data-group="${g}"]`);
+        if (seg) seg.classList.add('active');
+      }, 2400 + i * 120);
+    });
+
+    // 4200ms — Fly cells
+    setTimeout(() => {
+      ALL_GROUPS.forEach(g => {
+        const chain = g.startsWith('b') ? 'btc' : 'ada';
+        const srcCells = document.querySelectorAll(`.block-grid[data-chain="${chain}"] .cell[data-g="${g}"]`);
+        const tgtGroup = document.querySelector(`[data-tg="${g}"]`);
+        if (!tgtGroup) return;
+        const tgtCells = tgtGroup.querySelectorAll('.cell');
+        srcCells.forEach((src, ci) => {
+          const tgt = tgtCells[ci];
+          if (!tgt) return;
+          const srcR = src.getBoundingClientRect();
+          const tgtR = tgt.getBoundingClientRect();
+          const flyer = document.createElement('div');
+          flyer.className = 'flyer ' + (chain === 'btc' ? 'btc-fly' : 'ada-fly');
+          flyer.textContent = src.textContent;
+          flyer.style.left = srcR.left + 'px';
+          flyer.style.top = srcR.top + 'px';
+          flyer.style.width = srcR.width + 'px';
+          document.body.appendChild(flyer);
+          src.style.opacity = '0';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              flyer.style.left = tgtR.left + 'px';
+              flyer.style.top = tgtR.top + 'px';
+              flyer.style.width = tgtR.width + 'px';
+            });
+          });
+        });
+      });
+    }, 4200);
+
+    // 5300ms — Land slice
+    setTimeout(() => {
+      outLabel.classList.add('visible');
+      outGrid.classList.add('active');
+      outCells.forEach(c => c.classList.add('landed'));
+      document.querySelectorAll('.flyer').forEach(f => {
+        f.style.opacity = '0';
+        setTimeout(() => f.remove(), 400);
+      });
+    }, 5300);
+
+    // 6400ms — Show dApp
+    setTimeout(() => {
+      dappSection.classList.add('visible');
+    }, 6400);
+
+    // 6800ms — Type query lines one by one
+    queryLines.forEach((line, i) => {
+      setTimeout(() => line.classList.add('show'), 6800 + i * 200);
+    });
+
+    // 8000ms — dApp lights up, query fires
+    setTimeout(() => {
+      dappSection.classList.add('querying');
+      statusText.textContent = 'querying...';
+    }, 8000);
+
+    // 8600ms — Response arrives
+    setTimeout(() => {
+      qResponse.classList.add('show');
+      statusText.textContent = 'connected';
+    }, 8600);
+
+    // Reset before next cycle
+    setTimeout(() => {
+      reset();
+    }, CYCLE - 1400);
+  }
+
+  tick();
+  setInterval(tick, CYCLE);
+}
+
+document.addEventListener('DOMContentLoaded', run);
+</script>
+</body>
+</html>
