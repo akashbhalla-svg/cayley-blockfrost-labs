@@ -98,7 +98,6 @@ const GrowthChart = () => {
                     <div className="leading-tight">{h.main}</div>
                     <div className="text-[10px] font-medium text-primary/60">{h.unit}</div>
                   </TableHead>
-                  </TableHead>
                 ))}
               </TableRow>
             </TableHeader>
