@@ -1,4 +1,11 @@
 import { useState } from "react";
+import { Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Table,
   TableHeader,
@@ -22,7 +29,7 @@ const headers = [
   { main: "Indexed Growth", unit: "(TB/mo)" },
   { main: "Indexed Cost", unit: "($/mo)" },
   { main: "Indexed Cost", unit: "($/yr)" },
-  { main: "Yearly % Incr", unit: "from 1.3TB" },
+  { main: "Yearly % Incr", unit: "from 1.3TB", tooltip: "Current Blockfrost dataset." },
   { main: "5-yr Cumul. Growth", unit: "(TB)" },
   { main: "5-yr Cumul. Cost", unit: "($)" },
   { main: "5-yr %", unit: "from current" },
@@ -99,7 +106,21 @@ const GrowthChart = () => {
                 {headers.map((h) => (
                   <TableHead key={h.main + h.unit} className="text-primary font-bold text-xs px-3">
                     <div className="leading-tight">{h.main}</div>
-                    <div className="text-[10px] font-medium text-primary/60">{h.unit}</div>
+                    <div className="text-[10px] font-medium text-primary/60 flex items-center gap-1">
+                      {h.unit}
+                      {"tooltip" in h && h.tooltip && (
+                        <TooltipProvider delayDuration={200}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info size={10} className="inline-block cursor-help opacity-60 hover:opacity-100 transition-opacity" />
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="text-xs">
+                              {h.tooltip}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
                   </TableHead>
                 ))}
               </TableRow>
