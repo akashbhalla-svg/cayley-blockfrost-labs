@@ -32,10 +32,16 @@ const GrowthChart = () => {
     <section className="relative py-24">
       <div className="absolute inset-0 grid-bg opacity-20" />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <div className="text-center mb-10">
+        <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
-            Predicted <span className="text-primary">Growth Patterns</span>
+            Why Do We <span className="text-primary">Need It</span>
           </h2>
+        </div>
+
+        <div className="text-center mb-10">
+          <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
+            Predicted <span className="text-primary">Growth Patterns</span>
+          </h3>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm">
             Based on CIP-0164 for a single indexer — with 100+ Icebreakers in production.
           </p>
