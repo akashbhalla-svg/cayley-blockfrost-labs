@@ -30,10 +30,13 @@ const Hero = () => {
       </div>
 
       {/* Slice Animation */}
-      <div className="relative z-10 mt-20 text-center">
+      <div className="relative z-10 mt-20 text-center max-w-2xl px-6">
         <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
           How it <span className="text-primary">Works</span>
         </h2>
+        <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
+          Instead of indexing the entire dataset, anyone can propose a slice of data that is faster to index and faster to query. A decentralized prediction market can be used to choose which slices are critical to index, decided by the entire community.
+        </p>
       </div>
 
       <div className="relative z-10 w-full max-w-[920px] mt-10 px-4">
