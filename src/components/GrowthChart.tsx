@@ -54,6 +54,9 @@ const GrowthChart = () => {
           <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
             Why Do We <span className="text-primary">Need It</span>
           </h2>
+          <blockquote className="mt-6 text-lg italic text-muted-foreground max-w-2xl mx-auto border-l-4 border-primary/40 pl-5 text-left">
+            "At Blockfrost, we see that 99% of queries are looking for 1% of data"
+          </blockquote>
         </div>
 
         <div className="text-center mb-10">
