@@ -22,11 +22,11 @@ const Hero = () => {
           Decentralized Slice Indexing for future scaling
         </p>
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <a href="#" className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2 text-sm font-medium text-primary hover:bg-primary/10 transition-colors">
             View Proposal <ExternalLink size={14} />
           </a>
-        </div>
+        </div> */}
       </div>
 
       {/* Slice Animation */}
