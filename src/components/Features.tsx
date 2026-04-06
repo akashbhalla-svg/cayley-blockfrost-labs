@@ -60,6 +60,10 @@ const Features = () => {
             </AccordionItem>
           ))}
         </Accordion>
+
+        <p className="mt-8 text-center text-xs text-muted-foreground italic">
+          This is a live FAQ — use the channels below to ask questions and we'll keep adding them here. Check back often for updates!
+        </p>
       </div>
     </section>
   );
