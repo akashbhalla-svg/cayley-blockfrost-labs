@@ -34,6 +34,9 @@ const Hero = () => {
         <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
           How it <span className="text-primary">Works</span>
         </h2>
+        <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
+          Instead of indexing the entire dataset, anyone can propose a slice of data that is faster to index and faster to query. A <a href="https://cips.cardano.org/cip/CIP-0164" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">decentralized prediction market</a> can be used to choose which slices are critical to index, decided by the entire community.
+        </p>
       </div>
 
       <div className="relative z-10 w-full max-w-[920px] mt-10 px-4">
