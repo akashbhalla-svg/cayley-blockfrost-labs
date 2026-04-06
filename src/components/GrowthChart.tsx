@@ -17,15 +17,15 @@ const singleData = [
 ];
 
 const headers = [
-  "Throughput (TxkB/s)",
-  "Raw Growth (GB/mo)",
-  "Indexed Growth (TB/mo)",
-  "Indexed Cost ($/mo)",
-  "Indexed Cost ($/yr)",
-  "Yearly % Incr from 1.3TB",
-  "5-yr Cumul. Growth (TB)",
-  "5-yr Cumul. Cost ($)",
-  "5-yr % from current state",
+  { main: "Throughput", unit: "(TxkB/s)" },
+  { main: "Raw Growth", unit: "(GB/mo)" },
+  { main: "Indexed Growth", unit: "(TB/mo)" },
+  { main: "Indexed Cost", unit: "($/mo)" },
+  { main: "Indexed Cost", unit: "($/yr)" },
+  { main: "Yearly % Incr", unit: "from 1.3TB" },
+  { main: "5-yr Cumul. Growth", unit: "(TB)" },
+  { main: "5-yr Cumul. Cost", unit: "($)" },
+  { main: "5-yr %", unit: "from current" },
 ];
 
 const fmt = (n: number, prefix = "") => `~${prefix}${n.toLocaleString()}`;
@@ -89,13 +89,14 @@ const GrowthChart = () => {
           </button>
         </div>
 
-        <div className="rounded-xl border border-border/60 bg-card/30 overflow-hidden">
+        <div className="rounded-xl border border-border/60 bg-card/30 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow className="border-border/60 bg-primary/10 hover:bg-primary/10">
                 {headers.map((h) => (
-                  <TableHead key={h} className="text-primary font-bold text-xs whitespace-nowrap">
-                    {h}
+                  <TableHead key={h.main + h.unit} className="text-primary font-bold text-xs px-3">
+                    <div className="leading-tight">{h.main}</div>
+                    <div className="text-[10px] font-medium text-primary/60">{h.unit}</div>
                   </TableHead>
                 ))}
               </TableRow>
