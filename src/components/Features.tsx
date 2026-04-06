@@ -17,14 +17,14 @@ const faqs = [
       "Cayley plans to support Cardano and Bitcoin by end of 2026.",
   },
   {
-    question: "How does Slice differ from existing indexers?",
+    question: "What is the Icebreakers program?",
     answer:
-      "Unlike centralized indexers, Slice operates permissionlessly with cryptographic verification and no single point of failure. Its slice architecture enables horizontal scaling.",
+      "The Icebreakers program is an incentivized testing initiative featuring a network of Cardano node operators who participate by sharing their node resources. These operators facilitate access to data stored on the Cardano blockchain, aiming to decentralize Blockfrost by leveraging the existing community infrastructure.",
   },
   {
-    question: "What is an Icebreaker?",
+    question: "How does project Cayley relate to Icebreakers?",
     answer:
-      "An Icebreaker is a node in the Slice network that indexes a portion of the blockchain data and serves queries for its assigned slices.",
+      "Project Cayley is the result of learnings from the Icebreakers program. The insights gained from running a decentralized network of node operators directly shaped the design and architecture of Cayley.",
   },
   {
     question: "Is Slice open source?",
