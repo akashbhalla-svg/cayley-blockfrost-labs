@@ -373,11 +373,18 @@
         <div class="define-title">Define Your Slice</div>
       </div>
       <div class="define-query">
-        <div class="def-line" id="dline1"><span class="d-kw">slice</span> {</div>
-        <div class="def-line" id="dline2">&nbsp;&nbsp;<span class="d-fn">chains</span>: [<span class="d-str">"btc"</span>, <span class="d-str">"ada"</span>]</div>
-        <div class="def-line" id="dline3">&nbsp;&nbsp;<span class="d-fn">include</span>: [<span class="d-str">"blocks"</span>, <span class="d-str">"txs"</span>, <span class="d-str">"metadata"</span>]</div>
-        <div class="def-line" id="dline4">&nbsp;&nbsp;<span class="d-fn">filter</span>: { <span class="d-str">"epoch"</span>: <span class="d-str">"*"</span>, <span class="d-str">"relevant"</span>: <span class="d-kw">true</span> }</div>
-        <div class="def-line" id="dline5">} <span class="d-cm">// only what your dApp needs</span></div>
+        <div class="def-line" id="dline1"><span class="d-kw">use</span> <span class="d-fn">cardano</span>.<span class="d-str">preview</span>, <span class="d-fn">bitcoin</span>.<span class="d-str">testnet4</span>;</div>
+        <div class="def-line" id="dline2">&nbsp;</div>
+        <div class="def-line" id="dline3"><span class="d-fn">cardano</span>.<span class="d-str">preview</span>.<span class="d-fn">address</span> <span class="d-str">"addr_test1vz8...ea75"</span> {</div>
+        <div class="def-line" id="dline4">&nbsp;&nbsp;<span class="d-kw">where</span> {</div>
+        <div class="def-line" id="dline5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="d-kw">after</span> <span class="d-fn">slot</span> <span class="d-str">107711786</span> ;</div>
+        <div class="def-line" id="dline6">&nbsp;&nbsp;}</div>
+        <div class="def-line" id="dline7">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">tx_hash</span>, <span class="d-str">block_no</span>, <span class="d-str">fee</span>, <span class="d-str">outputs</span>, <span class="d-str">cbor</span>;</div>
+        <div class="def-line" id="dline8">}</div>
+        <div class="def-line" id="dline9">&nbsp;</div>
+        <div class="def-line" id="dline10"><span class="d-fn">bitcoin</span>.<span class="d-str">testnet4</span>.<span class="d-fn">address</span> <span class="d-str">"tb1p2n...98hq"</span> {</div>
+        <div class="def-line" id="dline11">&nbsp;&nbsp;<span class="d-kw">where</span> {</div>
+        <div class="def-line" id="dline12">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">tx_hash</span>, <span class="d-str">block_no</span>, <span class="d-str">fee</span>, <span class="d-str">inputs</span>, <span class="d-str">outputs</span>, <span class="d-str">raw</span>;</div>
       </div>
     </div>
     <div class="define-stream-down"></div>
