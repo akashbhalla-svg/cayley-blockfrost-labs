@@ -90,12 +90,24 @@
 
 @layer utilities {
   .glow-cyan {
+    box-shadow: 0 0 20px hsl(190 80% 40% / 0.2), 0 0 60px hsl(190 80% 40% / 0.05);
+  }
+  .dark .glow-cyan {
     box-shadow: 0 0 20px hsl(190 95% 55% / 0.3), 0 0 60px hsl(190 95% 55% / 0.1);
   }
   .text-glow-cyan {
+    text-shadow: none;
+  }
+  .dark .text-glow-cyan {
     text-shadow: 0 0 30px hsl(190 95% 55% / 0.5);
   }
   .grid-bg {
+    background-image:
+      linear-gradient(hsl(220 15% 85% / 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(220 15% 85% / 0.6) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .dark .grid-bg {
     background-image:
       linear-gradient(hsl(228 30% 16% / 0.5) 1px, transparent 1px),
       linear-gradient(90deg, hsl(228 30% 16% / 0.5) 1px, transparent 1px);
