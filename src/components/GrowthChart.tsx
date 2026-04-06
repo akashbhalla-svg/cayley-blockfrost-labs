@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -7,12 +8,12 @@ import {
   TableCell,
 } from "@/components/ui/table";
 
-const data = [
-  { throughput: 150, rawGrowth: "~394", indexedGrowth: "~3.94", indexedCostMo: "~$263.50", indexedCostYr: "~$3,162", yearlyPct: "~3,637%", fiveYrGrowth: "~236.4", fiveYrCost: "~$15,810", fiveYrPct: "~18,185%" },
-  { throughput: 200, rawGrowth: "~526", indexedGrowth: "~5.26", indexedCostMo: "~$376.40", indexedCostYr: "~$4,517", yearlyPct: "~4,855%", fiveYrGrowth: "~315.6", fiveYrCost: "~$22,585", fiveYrPct: "~24,277%" },
-  { throughput: 250, rawGrowth: "~657", indexedGrowth: "~6.57", indexedCostMo: "~$439.20", indexedCostYr: "~$5,270", yearlyPct: "~6,065%", fiveYrGrowth: "~394.2", fiveYrCost: "~$26,350", fiveYrPct: "~30,323%" },
-  { throughput: 300, rawGrowth: "~788", indexedGrowth: "~7.88", indexedCostMo: "~$546.40", indexedCostYr: "~$6,557", yearlyPct: "~7,274%", fiveYrGrowth: "~472.8", fiveYrCost: "~$32,785", fiveYrPct: "~36,369%" },
-  { throughput: 350, rawGrowth: "~920", indexedGrowth: "~9.20", indexedCostMo: "~$655.90", indexedCostYr: "~$7,871", yearlyPct: "~8,492%", fiveYrGrowth: "~552.0", fiveYrCost: "~$39,355", fiveYrPct: "~42,462%" },
+const singleData = [
+  { throughput: 150, rawGrowth: 394, indexedGrowth: 3.94, indexedCostMo: 263.5, indexedCostYr: 3162, yearlyPct: 3637, fiveYrGrowth: 236.4, fiveYrCost: 15810, fiveYrPct: "~18,185%" },
+  { throughput: 200, rawGrowth: 526, indexedGrowth: 5.26, indexedCostMo: 376.4, indexedCostYr: 4517, yearlyPct: 4855, fiveYrGrowth: 315.6, fiveYrCost: 22585, fiveYrPct: "~24,277%" },
+  { throughput: 250, rawGrowth: 657, indexedGrowth: 6.57, indexedCostMo: 439.2, indexedCostYr: 5270, yearlyPct: 6065, fiveYrGrowth: 394.2, fiveYrCost: 26350, fiveYrPct: "~30,323%" },
+  { throughput: 300, rawGrowth: 788, indexedGrowth: 7.88, indexedCostMo: 546.4, indexedCostYr: 6557, yearlyPct: 7274, fiveYrGrowth: 472.8, fiveYrCost: 32785, fiveYrPct: "~36,369%" },
+  { throughput: 350, rawGrowth: 920, indexedGrowth: 9.2, indexedCostMo: 655.9, indexedCostYr: 7871, yearlyPct: 8492, fiveYrGrowth: 552.0, fiveYrCost: 39355, fiveYrPct: "~42,462%" },
 ];
 
 const headers = [
@@ -27,7 +28,24 @@ const headers = [
   "5-yr % from current state",
 ];
 
+const fmt = (n: number, prefix = "") => `~${prefix}${n.toLocaleString()}`;
+
 const GrowthChart = () => {
+  const [tab, setTab] = useState<"single" | "network">("single");
+  const multiplier = tab === "network" ? 100 : 1;
+
+  const rows = singleData.map((r) => ({
+    throughput: r.throughput,
+    rawGrowth: fmt(r.rawGrowth),
+    indexedGrowth: `~${(r.indexedGrowth * multiplier).toLocaleString()}`,
+    indexedCostMo: fmt(r.indexedCostMo * multiplier, "$"),
+    indexedCostYr: fmt(r.indexedCostYr * multiplier, "$"),
+    yearlyPct: `~${(r.yearlyPct * multiplier).toLocaleString()}%`,
+    fiveYrGrowth: `~${(r.fiveYrGrowth * multiplier).toLocaleString()}`,
+    fiveYrCost: fmt(r.fiveYrCost * multiplier, "$"),
+    fiveYrPct: r.fiveYrPct,
+  }));
+
   return (
     <section className="relative py-24">
       <div className="absolute inset-0 grid-bg opacity-20" />
@@ -43,8 +61,32 @@ const GrowthChart = () => {
             Predicted Cardano <span className="text-primary">Growth Patterns</span> after Leios Scaling
           </h3>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm">
-            Based on CIP-0164 for a single indexer — with 100+ Icebreakers in production.
+            Based on CIP-0164 — with 100+ Icebreakers in production.
           </p>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex justify-center gap-2 mb-6">
+          <button
+            onClick={() => setTab("single")}
+            className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+              tab === "single"
+                ? "bg-primary/15 border border-primary/40 text-primary"
+                : "bg-card/40 border border-border/50 text-muted-foreground hover:text-foreground hover:border-border"
+            }`}
+          >
+            Single Indexer
+          </button>
+          <button
+            onClick={() => setTab("network")}
+            className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+              tab === "network"
+                ? "bg-primary/15 border border-primary/40 text-primary"
+                : "bg-card/40 border border-border/50 text-muted-foreground hover:text-foreground hover:border-border"
+            }`}
+          >
+            Entire Network (100+ Icebreakers)
+          </button>
         </div>
 
         <div className="rounded-xl border border-border/60 bg-card/30 overflow-hidden">
@@ -59,7 +101,7 @@ const GrowthChart = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((row) => (
+              {rows.map((row) => (
                 <TableRow key={row.throughput} className="border-border/40 hover:bg-secondary/30">
                   <TableCell className="font-semibold text-foreground">{row.throughput}</TableCell>
                   <TableCell className="text-muted-foreground">{row.rawGrowth}</TableCell>
@@ -77,7 +119,7 @@ const GrowthChart = () => {
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground italic">
-          Table 2.1: Predicted growth patterns based on CIP-0164 for a single indexer (we have more than 100+ Icebreakers)
+          Table 2.1: Predicted growth patterns based on CIP-0164 for a {tab === "single" ? "single indexer" : "network of 100+ Icebreakers"}
         </p>
       </div>
     </section>
