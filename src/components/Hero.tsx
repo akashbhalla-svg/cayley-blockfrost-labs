@@ -32,7 +32,13 @@ const Hero = () => {
       </div>
 
       {/* Slice Animation */}
-      <div className="relative z-10 w-full max-w-[920px] mt-16 px-4">
+      <div className="relative z-10 mt-20 text-center">
+        <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+          How it <span className="text-primary">Works</span>
+        </h2>
+      </div>
+
+      <div className="relative z-10 w-full max-w-[920px] mt-10 px-4">
         <iframe
           src="/slice-animation.html"
           className="w-full border-0 rounded-xl"
