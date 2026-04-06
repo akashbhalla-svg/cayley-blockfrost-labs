@@ -24,11 +24,6 @@ const Hero = () => {
           Decentralized Slice Indexing for future scaling
         </p>
 
-        <div className="mt-6">
-          <Button size="lg" variant="outline" className="font-semibold text-base px-8 gap-2 border-border hover:bg-secondary">
-            <BookOpen size={18} /> Read Docs
-          </Button>
-        </div>
       </div>
 
       {/* Slice Animation */}
