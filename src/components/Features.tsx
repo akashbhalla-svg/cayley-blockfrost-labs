@@ -19,7 +19,7 @@ const faqs = [
   {
     question: "What is the Icebreakers program?",
     answer:
-      "The Icebreakers program is an incentivized testing initiative featuring a network of Cardano node operators who participate by sharing their node resources. These operators facilitate access to data stored on the Cardano blockchain, aiming to decentralize Blockfrost by leveraging the existing community infrastructure.",
+      "The Icebreakers program is an ongoing incentivized testing initiative, running for over a year, featuring a network of Cardano node operators who participate by sharing their node resources. These operators facilitate access to data stored on the Cardano blockchain, aiming to decentralize Blockfrost by leveraging the existing community infrastructure.",
   },
   {
     question: "How does project Cayley relate to Icebreakers?",
