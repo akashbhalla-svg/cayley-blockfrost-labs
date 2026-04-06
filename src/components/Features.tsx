@@ -27,9 +27,9 @@ const faqs = [
       "Project Cayley is the result of learnings from the Icebreakers program. The insights gained from running a decentralized network of node operators directly shaped the design and architecture of Cayley.",
   },
   {
-    question: "Is Slice open source?",
+    question: "Is Cayley open source?",
     answer:
-      "Yes. Slice is built in the open and welcomes community contributions. Check our GitHub for the latest code and documentation.",
+      "Yes. As with everything we do, Cayley will be completely open source. Check our GitHub for the latest code and documentation.",
   },
 ];
 
