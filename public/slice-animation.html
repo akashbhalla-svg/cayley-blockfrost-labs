@@ -15,6 +15,14 @@
     --slice:#00d4ff;--slice-glow:#00d4ff30;--slice-dim:#00d4ff12;
     --purple:#a78bfa;--purple-dim:#a78bfa15;--purple-glow:#a78bfa40;
   }
+  :root.light{
+    --bg:#f5f7fa;--surface:#ffffff;--surface-2:#edf0f5;--border:#d5dbe5;
+    --text:#3a4560;--text-dim:#7a889e;--text-bright:#1a2030;
+    --btc:#d47a0a;--btc-dim:#f7931a18;--btc-glow:#f7931a25;--btc-border:#f7931a60;
+    --ada:#0fa888;--ada-dim:#17d1aa18;--ada-glow:#17d1aa25;--ada-border:#17d1aa60;
+    --slice:#0099bb;--slice-glow:#00b8e020;--slice-dim:#00d4ff10;
+    --purple:#7c5cc4;--purple-dim:#a78bfa18;--purple-glow:#a78bfa25;
+  }
   body{
     background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;
     min-height:100vh;display:flex;flex-direction:column;align-items:center;
@@ -637,6 +645,23 @@ function run() {
 }
 
 document.addEventListener('DOMContentLoaded', run);
+</script>
+<script>
+// Sync theme with parent page
+function syncTheme() {
+  try {
+    const parentDark = window.parent.document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('light', !parentDark);
+  } catch(e) {
+    // cross-origin fallback
+  }
+}
+syncTheme();
+// Watch for changes
+const obs = new MutationObserver(syncTheme);
+try {
+  obs.observe(window.parent.document.documentElement, { attributes: true, attributeFilter: ['class'] });
+} catch(e) {}
 </script>
 </body>
 </html>
