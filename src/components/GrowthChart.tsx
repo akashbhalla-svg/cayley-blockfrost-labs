@@ -55,7 +55,7 @@ const GrowthChart = () => {
             Why Do We <span className="text-primary">Need It</span>
           </h2>
           <blockquote className="mt-6 text-lg italic text-muted-foreground max-w-2xl mx-auto border-l-4 border-primary/40 pl-5 text-left">
-            "At Blockfrost, we see that 99% of queries are looking for 1% of data. Indexing 100% of the data will hurt decentralization over time."
+            "At Blockfrost, we see that 99% of users consume just 1% of the dataset. Requiring every indexer to store 100% of the data will hurt decentralization over time — we need to solve this before it becomes a problem."
           </blockquote>
         </div>
 
