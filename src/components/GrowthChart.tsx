@@ -61,7 +61,7 @@ const GrowthChart = () => {
             Predicted Cardano <span className="text-primary">Growth Patterns</span> after Leios Scaling
           </h3>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm">
-            Based on CIP-0164 — with 100+ Icebreakers in production.
+            Based on CIP-0164
           </p>
         </div>
 
