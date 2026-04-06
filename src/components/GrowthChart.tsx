@@ -40,7 +40,7 @@ const GrowthChart = () => {
 
         <div className="text-center mb-10">
           <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
-            Predicted <span className="text-primary">Growth Patterns</span>
+            Predicted Cardano <span className="text-primary">Growth Patterns</span> after Leios Scaling
           </h3>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-sm">
             Based on CIP-0164 for a single indexer — with 100+ Icebreakers in production.
