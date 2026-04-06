@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
+import GrowthChart from "@/components/GrowthChart";
 import Footer from "@/components/Footer";
 
 const Index = () => {
