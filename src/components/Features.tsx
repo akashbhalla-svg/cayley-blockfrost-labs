@@ -9,12 +9,12 @@ const faqs = [
   {
     question: "What is a Slice?",
     answer:
-      "Within project Cayley, we call a slice a subset of data being indexed for fast parallel querying and minimal redundancy.",
+      "Within Project Cayley, a slice is a subset of data indexed for fast parallel querying and minimal redundancy.",
   },
   {
     question: "Which blockchains are supported?",
     answer:
-      "Cayley plans to support Cardano and Bitcoin by end of 2026.",
+      "Cayley plans to support Cardano and Bitcoin by the end of 2026.",
   },
   {
     question: "What is the Icebreakers program?",
