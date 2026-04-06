@@ -12,20 +12,16 @@ const Hero = () => {
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         {/* Badge */}
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-          Multichain · Decentralized · Open Source
-        </div>
+        <p className="mb-4 text-sm font-medium tracking-widest uppercase text-muted-foreground">
+          Blockfrost for the next generation
+        </p>
 
         <h1 className="text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-          Decentralized{" "}
-          <span className="text-primary text-glow-cyan">Slice Indexing</span>
-          {" "}for Every Chain
+          Project <span className="text-primary text-glow-cyan">Cayley</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-          Cayley Protocol enables permissionless, multichain data indexing through a novel slice architecture.
-          Query any blockchain with zero trust assumptions.
+          Decentralized Slice Indexing for future scaling
         </p>
 
         <div className="mt-6">
