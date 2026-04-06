@@ -14,7 +14,7 @@ const faqs = [
   {
     question: "Which blockchains are supported?",
     answer:
-      "Slice currently targets Cardano, with plans to expand to other chains in the future.",
+      "Cayley plans to support Cardano and Bitcoin by end of 2026.",
   },
   {
     question: "How does Slice differ from existing indexers?",
