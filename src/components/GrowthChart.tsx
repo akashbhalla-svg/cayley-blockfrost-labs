@@ -123,7 +123,7 @@ const GrowthChart = () => {
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground italic">
-          Table 2.1: Predicted growth patterns based on <a href="https://cips.cardano.org/cip/CIP-0164" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80 transition-colors">CIP-0164</a> for a {tab === "single" ? "single indexer" : "network of 100+ Icebreakers"}
+          Table 1: Predicted growth patterns based on <a href="https://cips.cardano.org/cip/CIP-0164" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80 transition-colors">CIP-0164</a> for a {tab === "single" ? "single indexer" : "network of 100+ Icebreakers"}
         </p>
       </div>
     </section>
