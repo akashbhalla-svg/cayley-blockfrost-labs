@@ -7,9 +7,9 @@ import {
 
 const faqs = [
   {
-    question: "What is Slice?",
+    question: "What is a Slice?",
     answer:
-      "Slice is a decentralized indexing protocol that partitions blockchain data into efficient slices for fast parallel querying and minimal redundancy.",
+      "Within project Cayley, we call a slice a subset of data being indexed for fast parallel querying and minimal redundancy.",
   },
   {
     question: "Which blockchains are supported?",
