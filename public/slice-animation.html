@@ -646,5 +646,22 @@ function run() {
 
 document.addEventListener('DOMContentLoaded', run);
 </script>
+<script>
+// Sync theme with parent page
+function syncTheme() {
+  try {
+    const parentDark = window.parent.document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('light', !parentDark);
+  } catch(e) {
+    // cross-origin fallback
+  }
+}
+syncTheme();
+// Watch for changes
+const obs = new MutationObserver(syncTheme);
+try {
+  obs.observe(window.parent.document.documentElement, { attributes: true, attributeFilter: ['class'] });
+} catch(e) {}
+</script>
 </body>
 </html>
