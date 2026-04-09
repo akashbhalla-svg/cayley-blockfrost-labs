@@ -7,7 +7,7 @@ import {
 
 const faqs = [
   {
-    question: "What is a Slice?",
+    question: "What is a slice?",
     answer:
       "Within Project Cayley, a slice is a subset of data indexed for fast parallel querying and minimal redundancy.",
   },
