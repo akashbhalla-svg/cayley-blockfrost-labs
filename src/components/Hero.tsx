@@ -41,7 +41,7 @@ const Hero = () => {
 
       <div className="relative z-10 w-full max-w-[920px] mt-10 px-4">
         <iframe
-          src="/slice-animation.html"
+          src={import.meta.env.BASE_URL + "slice-animation.html"}
           className="w-full border-0 rounded-xl"
           style={{ height: '900px', background: 'transparent' }}
           title="Cayley Slice Indexing Animation"
