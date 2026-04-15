@@ -11,7 +11,7 @@
     --bg:#0a0c12;--surface:#11141e;--surface-2:#161b28;--border:#1c2436;
     --text:#b8c4d8;--text-dim:#4a5874;--text-bright:#e2e8f4;
     --btc:#f7931a;--btc-dim:#f7931a15;--btc-glow:#f7931a40;--btc-border:#f7931a50;
-    --ada:#17d1aa;--ada-dim:#17d1aa15;--ada-glow:#17d1aa40;--ada-border:#17d1aa50;
+    --ada:#9945FF;--ada-dim:#9945FF15;--ada-glow:#9945FF40;--ada-border:#9945FF50;
     --slice:#00d4ff;--slice-glow:#00d4ff30;--slice-dim:#00d4ff12;
     --purple:#a78bfa;--purple-dim:#a78bfa15;--purple-glow:#a78bfa40;
   }
@@ -19,7 +19,7 @@
     --bg:#f5f7fa;--surface:#ffffff;--surface-2:#edf0f5;--border:#d5dbe5;
     --text:#3a4560;--text-dim:#7a889e;--text-bright:#1a2030;
     --btc:#d47a0a;--btc-dim:#f7931a18;--btc-glow:#f7931a25;--btc-border:#f7931a60;
-    --ada:#0fa888;--ada-dim:#17d1aa18;--ada-glow:#17d1aa25;--ada-border:#17d1aa60;
+    --ada:#7B3FE4;--ada-dim:#9945FF18;--ada-glow:#9945FF25;--ada-border:#9945FF60;
     --slice:#0099bb;--slice-glow:#00b8e020;--slice-dim:#00d4ff10;
     --purple:#7c5cc4;--purple-dim:#a78bfa18;--purple-glow:#a78bfa25;
   }
@@ -55,7 +55,7 @@
     padding:4px 11px;border-radius:5px;color:#fff;
   }
   .badge.btc{background:#c47512}
-  .badge.ada{background:#0033ad}
+  .badge.ada{background:#9945FF}
   .badge svg{width:12px;height:12px;fill:currentColor}
   .header h1{
     font-family:'Space Grotesk',sans-serif;font-weight:700;
@@ -381,18 +381,19 @@
         <div class="define-title">Define Your Slice</div>
       </div>
       <div class="define-query">
-        <div class="def-line" id="dline1"><span class="d-kw">use</span> <span class="d-fn">cardano</span>.<span class="d-str">preview</span>, <span class="d-fn">bitcoin</span>.<span class="d-str">testnet4</span>;</div>
+        <div class="def-line" id="dline1"><span class="d-kw">use</span> <span class="d-fn">hyperliquid</span>.<span class="d-str">mainnet</span>, <span class="d-fn">solana</span>.<span class="d-str">mainnet</span>;</div>
         <div class="def-line" id="dline2">&nbsp;</div>
-        <div class="def-line" id="dline3"><span class="d-fn">cardano</span>.<span class="d-str">preview</span>.<span class="d-fn">address</span> <span class="d-str">"addr_test1vz8...ea75"</span> {</div>
+        <div class="def-line" id="dline3"><span class="d-fn">hyperliquid</span>.<span class="d-str">mainnet</span>.<span class="d-fn">perp_trades</span> {</div>
         <div class="def-line" id="dline4">&nbsp;&nbsp;<span class="d-kw">where</span> {</div>
-        <div class="def-line" id="dline5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="d-kw">after</span> <span class="d-fn">slot</span> <span class="d-str">107711786</span> ;</div>
-        <div class="def-line" id="dline6">&nbsp;&nbsp;}</div>
-        <div class="def-line" id="dline7">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">tx_hash</span>, <span class="d-str">block_no</span>, <span class="d-str">fee</span>, <span class="d-str">outputs</span>, <span class="d-str">cbor</span>;</div>
-        <div class="def-line" id="dline8">}</div>
-        <div class="def-line" id="dline9">&nbsp;</div>
-        <div class="def-line" id="dline10"><span class="d-fn">bitcoin</span>.<span class="d-str">testnet4</span>.<span class="d-fn">address</span> <span class="d-str">"tb1p2n...98hq"</span> {</div>
-        <div class="def-line" id="dline11">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">tx_hash</span>, <span class="d-str">block_no</span>, <span class="d-str">fee</span>, <span class="d-str">inputs</span>, <span class="d-str">outputs</span>, <span class="d-str">raw</span>;</div>
-        <div class="def-line" id="dline12">}</div>
+        <div class="def-line" id="dline5">&nbsp;&nbsp;&nbsp;&nbsp;<span class="d-fn">market</span> <span class="d-str">"ETH-PERP"</span>;</div>
+        <div class="def-line" id="dline6">&nbsp;&nbsp;&nbsp;&nbsp;<span class="d-kw">after</span> <span class="d-fn">timestamp</span> <span class="d-str">2025-01-01</span>;</div>
+        <div class="def-line" id="dline7">&nbsp;&nbsp;}</div>
+        <div class="def-line" id="dline8">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">fill_price</span>, <span class="d-str">size</span>, <span class="d-str">side</span>, <span class="d-str">fee</span>, <span class="d-str">liquidation</span>;</div>
+        <div class="def-line" id="dline9">}</div>
+        <div class="def-line" id="dline10">&nbsp;</div>
+        <div class="def-line" id="dline11"><span class="d-fn">solana</span>.<span class="d-str">mainnet</span>.<span class="d-fn">program_state</span> <span class="d-str">"JUP6...4Kzc"</span> {</div>
+        <div class="def-line" id="dline12">&nbsp;&nbsp;<span class="d-fn">fields</span> <span class="d-str">tx_hash</span>, <span class="d-str">block_no</span>, <span class="d-str">accounts</span>, <span class="d-str">instructions</span>, <span class="d-str">raw</span>;</div>
+        <div class="def-line" id="dline13">}</div>
       </div>
     </div>
     <div class="define-tag" style="margin-top:2px">Step 2 · Index</div>
@@ -403,7 +404,7 @@
     <!-- Bitcoin -->
     <div class="chain-col btc-col">
       <div class="scale-section">
-        <div class="scale-top"><span class="label">Bitcoin Historical Data</span></div>
+        <div class="scale-top"><span class="label">Hyperliquid Historical Data</span></div>
         <div class="scale-bar">
           <div class="scale-bar-fill"></div>
           <div class="seg" data-group="b1" style="left:5%;width:6%"></div>
@@ -412,7 +413,7 @@
           <div class="seg" data-group="b4" style="left:78%;width:7%"></div>
         </div>
       </div>
-      <div class="grid-label"><div class="dot"></div> Bitcoin · Blocks & Txs</div>
+      <div class="grid-label"><div class="dot"></div> Hyperliquid · Perp Trades & Orders</div>
       <div class="block-grid" data-chain="btc">
         <div class="scanline"></div>
         <div class="cell" data-g="b1">3fa2</div><div class="cell" data-g="b1">c0e7</div><div class="cell">91b4</div><div class="cell">d738</div>
@@ -426,7 +427,7 @@
     <!-- Cardano -->
     <div class="chain-col ada-col">
       <div class="scale-section">
-        <div class="scale-top"><span class="label">Cardano Historical Data</span></div>
+        <div class="scale-top"><span class="label">Solana Historical Data</span></div>
         <div class="scale-bar">
           <div class="scale-bar-fill"></div>
           <div class="seg" data-group="a1" style="left:8%;width:5%"></div>
@@ -435,7 +436,7 @@
           <div class="seg" data-group="a4" style="left:85%;width:5%"></div>
         </div>
       </div>
-      <div class="grid-label"><div class="dot"></div> Cardano · Blocks & Metadata</div>
+      <div class="grid-label"><div class="dot"></div> Solana · Program State & Txs</div>
       <div class="block-grid" data-chain="ada">
         <div class="scanline"></div>
         <div class="cell">e2c4</div><div class="cell" data-g="a1">7b19</div><div class="cell" data-g="a1">d0f3</div><div class="cell">a856</div>
@@ -452,8 +453,8 @@
   <div class="output" id="output">
     <div class="output-label" id="outLabel">
       Combined Chain-Agnostic Slice
-      <span class="tag btc-tag">BTC</span>
-      <span class="tag ada-tag">ADA</span>
+      <span class="tag btc-tag">HYPE</span>
+      <span class="tag ada-tag">SOL</span>
     </div>
     <div class="output-grid" id="outGrid">
       <div class="out-group btc-out" data-tg="b1"><div class="cell">3fa2</div><div class="cell">c0e7</div></div>
@@ -483,8 +484,8 @@
       </div>
       <div class="dapp-query" id="dappQuery">
         <div class="query-line" id="qline1"><span class="q-kw">query</span> {</div>
-        <div class="query-line" id="qline2">&nbsp;&nbsp;<span class="q-fn">slice</span>(chains: [<span class="q-str">"btc"</span>, <span class="q-str">"ada"</span>]) {</div>
-        <div class="query-line" id="qline3">&nbsp;&nbsp;&nbsp;&nbsp;data { txId block hash }</div>
+        <div class="query-line" id="qline2">&nbsp;&nbsp;<span class="q-fn">slice</span>(chains: [<span class="q-str">"hype"</span>, <span class="q-str">"sol"</span>]) {</div>
+        <div class="query-line" id="qline3">&nbsp;&nbsp;&nbsp;&nbsp;data { fillPrice size side fee }</div>
         <div class="query-line" id="qline4">&nbsp;&nbsp;}</div>
         <div class="query-line" id="qline5">}</div>
         <div class="query-response" id="qResponse">

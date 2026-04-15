@@ -9,27 +9,27 @@ const faqs = [
   {
     question: "What is a slice?",
     answer:
-      "Within Project Cayley, a slice is a subset of data indexed for fast parallel querying and minimal redundancy.",
+      "A slice is a specific subset of on-chain data — for example, perpetual trade history on Hyperliquid, or decoded program state on Solana. Instead of indexing the entire chain, you define and query only the slices you need.",
   },
   {
     question: "Which blockchains are supported?",
     answer:
-      "Cayley plans to support Cardano and Bitcoin by the end of 2026.",
+      "Blockfrost Labs supports Hyperliquid, Solana, Bitcoin and Cardano. Blockfrost already serves 50%+ of Cardano's API traffic with 5+ years of operating history — Labs extends the same infrastructure to high-throughput chains.",
   },
   {
-    question: "What is the Icebreakers program?",
+    question: "How does slice indexing differ from full-chain indexing?",
     answer:
-      "The Icebreakers program is an ongoing incentivized testing initiative, running for over a year, featuring a network of Cardano node operators who participate by sharing their node resources. These operators facilitate access to data stored on the Cardano blockchain, aiming to decentralize Blockfrost by leveraging the existing community infrastructure.",
+      "Full-chain indexers store everything — terabytes of data per month, most of which goes unused. Slice indexing lets you select specific data types (trades, order books, liquidations, program state) and only that data is indexed and served. You pay for what you use, not what you don't.",
   },
   {
-    question: "How does project Cayley relate to Icebreakers?",
+    question: "What does the pricing look like?",
     answer:
-      "Project Cayley is the result of learnings from the Icebreakers program. The insights gained from running a decentralized network of node operators directly shaped the design and architecture of Cayley.",
+      "Mid-market pricing starting at $250/month per chain for slice-specific API access. Multi-chain bundles from $400/month. Positioned between free public RPCs and $6-12K/year enterprise contracts.",
   },
   {
-    question: "Is Cayley open source?",
+    question: "What is Cayley?",
     answer:
-      "Yes. As with everything we do, Cayley will be completely open source. Check our GitHub for the latest code and documentation.",
+      "Cayley is our open-source slice indexing engine — the technology that powers Blockfrost Labs. It enables selective, demand-driven data indexing across multiple chains through a single API surface.",
   },
 ];
 

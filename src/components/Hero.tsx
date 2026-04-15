@@ -11,15 +11,15 @@ const Hero = () => {
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <p className="mb-4 text-sm font-medium tracking-widest uppercase text-muted-foreground">
-          Blockfrost for the next generation
+          Indexed data for high-throughput chains
         </p>
 
         <h1 className="text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-          Project <span className="text-primary text-glow-cyan">Cayley</span>
+          Blockfrost <span className="text-primary text-glow-cyan">Labs</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-          Decentralized Slice Indexing for future scaling
+          Slice-specific indexed data across Hyperliquid, Solana, Bitcoin and Cardano
         </p>
 
         {/* <div className="mt-8">
@@ -35,7 +35,7 @@ const Hero = () => {
           How it <span className="text-primary">Works</span>
         </h2>
         <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
-          Instead of indexing the entire dataset, anyone can propose a slice of data that is faster to index and faster to query. A decentralized prediction market can be used to choose which slices are critical to index, as decided by the entire community.
+          Instead of indexing the entire chain, you define the exact data slices you need — and only those slices are indexed and served via API. Slice priority is demand-driven: the most requested data gets indexed first.
         </p>
       </div>
 
