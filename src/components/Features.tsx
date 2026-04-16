@@ -19,12 +19,22 @@ const faqs = [
   {
     question: "How does slice indexing differ from full-chain indexing?",
     answer:
-      "Full-chain indexers store everything — terabytes of data per month, most of which goes unused. Slice indexing lets you select specific data types (trades, order books, liquidations, program state) and only that data is indexed and served. You pay for what you use, not what you don't.",
+      "Traditional indexers require a single provider to store everything — terabytes of data per month, most of which goes unused. With slice indexing, independent operators each index specific slices of the chain. You subscribe only to the slices you need. The cost is lower because no single operator is forced to bear full-chain indexing overhead — and you only pay for what you consume.",
   },
   {
     question: "What does the pricing look like?",
     answer:
       "Mid-market pricing starting at $250/month per chain for slice-specific API access. Multi-chain bundles from $400/month. Positioned between free public RPCs and $6-12K/year enterprise contracts.",
+  },
+  {
+    question: "Who indexes the data?",
+    answer:
+      "Independent operators called Icebreakers index specific slices of the chain. Some operators may index a single slice, others may index many — or even the full chain. The network coordinates which slices are covered so consumers can access the data they need without running their own infrastructure. On Cardano, 100+ Icebreakers are already active and sharing revenue through this model.",
+  },
+  {
+    question: "How is data quality maintained?",
+    answer:
+      "A multi-layer quality system: Pathfinders signal which datasets are most valuable. Fishermen flag anomalous or bad data. Arbitrators review disputes. Operators who provide bad data face slashing penalties. It's a quality enforcement layer, not just trust.",
   },
   {
     question: "What is Cayley?",

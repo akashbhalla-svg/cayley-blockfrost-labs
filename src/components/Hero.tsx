@@ -1,5 +1,3 @@
-import { ExternalLink } from "lucide-react";
-
 const Hero = () => {
   return (
     <section className="relative flex flex-col items-center justify-center overflow-hidden pt-16 pb-16">
@@ -22,11 +20,6 @@ const Hero = () => {
           Slice-specific indexed data across Hyperliquid, Solana, Bitcoin and Cardano
         </p>
 
-        {/* <div className="mt-8">
-          <a href="#" className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2 text-sm font-medium text-primary hover:bg-primary/10 transition-colors">
-            View Proposal <ExternalLink size={14} />
-          </a>
-        </div> */}
       </div>
 
       {/* Slice Animation */}
@@ -35,7 +28,7 @@ const Hero = () => {
           How it <span className="text-primary">Works</span>
         </h2>
         <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
-          Instead of indexing the entire chain, you define the exact data slices you need — and only those slices are indexed and served via API. Slice priority is demand-driven: the most requested data gets indexed first.
+          Independent operators each index specific slices of the chain — no single provider needs to store everything. You define the slices you need, operators index them, and you query via API. Slice priority is demand-driven: the most requested data gets indexed first.
         </p>
       </div>
 
