@@ -28,7 +28,7 @@ const Hero = () => {
           How it <span className="text-primary">Works</span>
         </h2>
         <p className="mt-4 text-muted-foreground text-sm leading-relaxed">
-          Independent operators each index specific slices of the chain — no single provider needs to store everything. You define the slices you need, operators index them, and you query via API. Slice priority is demand-driven: the most requested data gets indexed first.
+          Independent operators each index specific slices of the chain, so no single provider needs to store everything. You define the slices you need, operators index them, and you query via API. Slice priority is demand-driven: the most requested data gets indexed first.
         </p>
       </div>
 

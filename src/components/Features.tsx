@@ -9,17 +9,17 @@ const faqs = [
   {
     question: "What is a slice?",
     answer:
-      "A slice is a specific subset of on-chain data — for example, perpetual trade history on Hyperliquid, or decoded program state on Solana. Instead of indexing the entire chain, you define and query only the slices you need.",
+      "A slice is a specific subset of on-chain data. For example, perpetual trade history on Hyperliquid, or decoded program state on Solana. Instead of indexing the entire chain, you define and query only the slices you need.",
   },
   {
     question: "Which blockchains are supported?",
     answer:
-      "Blockfrost Labs supports Hyperliquid, Solana, Bitcoin and Cardano. Blockfrost already serves 50%+ of Cardano's API traffic with 5+ years of operating history — Labs extends the same infrastructure to high-throughput chains.",
+      "Blockfrost Labs supports Hyperliquid, Solana, Bitcoin and Cardano. Blockfrost already serves 50%+ of Cardano's API traffic with 5+ years of operating history. Labs extends the same infrastructure to high-throughput chains.",
   },
   {
     question: "How does slice indexing differ from full-chain indexing?",
     answer:
-      "Traditional indexers require a single provider to store everything — terabytes of data per month, most of which goes unused. With slice indexing, independent operators each index specific slices of the chain. You subscribe only to the slices you need. The cost is lower because no single operator is forced to bear full-chain indexing overhead — and you only pay for what you consume.",
+      "Traditional indexers require a single provider to store everything: terabytes of data per month, most of which goes unused. With slice indexing, independent operators each index specific slices of the chain. You subscribe only to the slices you need. The cost is lower because no single operator is forced to bear full-chain indexing overhead, and you only pay for what you consume.",
   },
   {
     question: "What does the pricing look like?",
@@ -29,7 +29,7 @@ const faqs = [
   {
     question: "Who indexes the data?",
     answer:
-      "Independent operators called Icebreakers index specific slices of the chain. Some operators may index a single slice, others may index many — or even the full chain. The network coordinates which slices are covered so consumers can access the data they need without running their own infrastructure. On Cardano, 100+ Icebreakers are already active and sharing revenue through this model.",
+      "Independent operators called Icebreakers index specific slices of the chain. Some operators may index a single slice, others may index many, or even the full chain. The network coordinates which slices are covered so consumers can access the data they need without running their own infrastructure. On Cardano, 100+ Icebreakers are already active and sharing revenue through this model.",
   },
   {
     question: "How is data quality maintained?",
@@ -39,7 +39,7 @@ const faqs = [
   {
     question: "What is Cayley?",
     answer:
-      "Cayley is our open-source slice indexing engine — the technology that powers Blockfrost Labs. It enables selective, demand-driven data indexing across multiple chains through a single API surface.",
+      "Cayley is our open-source slice indexing engine, the technology that powers Blockfrost Labs. It enables selective, demand-driven data indexing across multiple chains through a single API surface.",
   },
 ];
 
@@ -72,7 +72,7 @@ const Features = () => {
         </Accordion>
 
         <p className="mt-8 text-center text-xs text-muted-foreground italic">
-          This is a live FAQ — use the channels below to ask questions and we'll keep adding them here. Check back often for updates!
+          This is a live FAQ. Use the channels below to ask questions and we'll keep adding them here. Check back often for updates!
         </p>
       </div>
     </section>

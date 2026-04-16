@@ -11,7 +11,7 @@ const chainData = [
   { chain: "Hyperliquid", dailyTxns: "561M", rawGrowth: "~3 TB/mo", costSelf: "Not feasible (closed-source)", costVendor: "$6–12K/yr (enterprise only)", gap: "No mid-market API access" },
   { chain: "Solana", dailyTxns: "~65M", rawGrowth: "~1 TB/day", costSelf: "$10–15K/mo (own node)", costVendor: "$499–2,900/mo (Helius)", gap: "$499/mo floor for production" },
   { chain: "Bitcoin", dailyTxns: "~500K", rawGrowth: "~7 GB/mo", costSelf: "$200–500/mo (full node)", costVendor: "Maestro / Alchemy from $49/mo", gap: "Ordinals/Runes indexing gaps" },
-  { chain: "Cardano", dailyTxns: "~100K", rawGrowth: "~1.3 TB total", costSelf: "$100–300/mo (full node)", costVendor: "Blockfrost (50%+ market share)", gap: "Served — our home chain" },
+  { chain: "Cardano", dailyTxns: "~100K", rawGrowth: "~1.3 TB total", costSelf: "$100–300/mo (full node)", costVendor: "Blockfrost (50%+ market share)", gap: "Served: our home chain" },
 ];
 
 const headers = [
@@ -33,7 +33,7 @@ const GrowthChart = () => {
             Why <span className="text-primary">Slice Indexing</span>
           </h2>
           <blockquote className="mt-6 text-lg italic text-muted-foreground max-w-2xl mx-auto border-l-4 border-primary/40 pl-5 text-left">
-            "On-chain data on high-throughput chains is either free and useless, or expensive and overkill. There is no mid-market, API-first option for teams that need specific data slices — not the entire chain."
+            "On-chain data on high-throughput chains is either free and useless, or expensive and overkill. There is no mid-market, API-first option for teams that need specific data slices, not the entire chain."
           </blockquote>
         </div>
 
