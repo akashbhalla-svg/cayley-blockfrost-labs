@@ -29,7 +29,7 @@ const faqs = [
   {
     question: "Who indexes the data?",
     answer:
-      "Independent operators called Icebreakers index specific slices of the chain. Some operators may index a single slice, others may index many, or even the full chain. The network coordinates which slices are covered so consumers can access the data they need without running their own infrastructure. On Cardano, 100+ Icebreakers are already active and sharing revenue through this model.",
+      "Independent operators index specific slices of the chain. Some may index a single slice, others may index many, or even the full chain. The network coordinates which slices are covered so consumers can access the data they need without running their own infrastructure. On Cardano, 100+ operators are already active and sharing revenue through this model.",
   },
   {
     question: "How is data quality maintained?",
